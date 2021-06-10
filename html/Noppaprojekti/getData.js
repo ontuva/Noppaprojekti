@@ -125,3 +125,5 @@ getPlayerResults(rollResults, "DM");
 //by damageDie
 getDamageDieResults(rollResults, "d8", "Kiljurn");
 
+getMostUsedDamageDie(rollResults);
+
