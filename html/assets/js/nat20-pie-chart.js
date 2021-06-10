@@ -9,8 +9,8 @@ var ctxP = document.getElementById("nat20PieChart").getContext('2d');
             labels: ["Gilbin", "Mirarin", "Pihlaja", "Kiljurn", "Aranthir", "DM", "Others"],
             datasets: [{
             data: [16.3, 12.2, 8.1, 14.3, 22.4, 18.3, 8.4],
-            backgroundColor: ["#0B090A", "#161A1D", "#660708", "#A4161A", "#BA181B", "#E5383B", "#B1A7A6"],
-            hoverBackgroundColor: ["#616774", "#616774", "#616774", "#616774", "#616774", "#616774", "#616774"]
+            backgroundColor: ["#006837", "#f7fcb9", "#d9f0a3", "#addd8e", "#78c679", "#41ab5d", "#238443"],
+            hoverBackgroundColor: ["#004529", "#004529", "#004529", "#004529", "#004529", "#004529", "#004529"]
             }]
         },
         options: {
