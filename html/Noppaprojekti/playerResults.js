@@ -1,6 +1,7 @@
 function getPlayerResults(rollResults, playerName) {
 
     var d20 = 0;
+    var result = 0;
     //lets save the results in object
     var results = {
         "1":0, 
@@ -31,6 +32,7 @@ function getPlayerResults(rollResults, playerName) {
             
             if (item.die == "d20") {
                 d20++;
+                result = +result + +item.result; //for calculating average
                 results[item.result] += 1;
             }
             
@@ -49,9 +51,14 @@ function getPlayerResults(rollResults, playerName) {
             die = keys[i]; // what die it was
         }       
     }
+
+    //calculate average roll
+    var average = result/d20;
+
     console.log(playerName + " rolled d20 " + d20 + " times.");
     console.log(results[1] + " were nat1");
     console.log(results[20] + " were nat20");
     console.log("Most rolled die was: " + die + " and it was rolled " + max + " times");
+    console.log("On average player rolled: " + average + " on d20");
     console.log(results);
 }
