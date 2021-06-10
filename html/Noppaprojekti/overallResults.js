@@ -37,7 +37,7 @@ function getOverallResults(rollResults) {
 
     //find out which die was rolled most and least
     var max = 0; //initialize
-    var min = 21; //20 is the largest dice number
+    var min = 9999; //needs to be larger than overall rolls
     var maxDie = 0; //initialize
     var minDie = 0; //initialize
     var keys = Object.keys(results); //get all the keys
