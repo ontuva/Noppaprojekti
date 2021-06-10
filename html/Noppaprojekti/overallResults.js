@@ -38,17 +38,18 @@ function getOverallResults(rollResults) {
     //find out which die was rolled most and least
     var max = 0; //initialize
     var min = 21; //20 is the largest dice number
-    var die = 0; //initialize
+    var maxDie = 0; //initialize
+    var minDie = 0; //initialize
     var keys = Object.keys(results); //get all the keys
 
     for (i = 0; i < keys.length; i++) {
         if(results[keys[i]] > max) {
             max = results[keys[i]]; // how many times was rolled
-            die = keys[i]; // what die it was
+            maxDie = keys[i]; // what die it was
         }     
         if(results[keys[i]] < min) {
             min = results[keys[i]]; // how many times was rolled
-            die = keys[i]; // what die it was
+            minDie = keys[i]; // what die it was
         }     
     }
 
@@ -59,8 +60,8 @@ function getOverallResults(rollResults) {
     console.log("AVERAGE d20:" + average);
 
 
-    console.log("MOST: " + die + " was rolled " + max + " times");
-    console.log("LEAST: " + die + " was rolled " + min + " times");
+    console.log("MOST: " + maxDie + " was rolled " + max + " times");
+    console.log("LEAST: " + minDie + " was rolled " + min + " times");
     console.log("d20 was rolled " + d20 + " times.");
     console.log(results[1] + " were nat1");
     console.log(results[20] + " were nat20");
