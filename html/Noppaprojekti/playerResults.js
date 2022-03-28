@@ -49,11 +49,13 @@ function getPlayerResults(rollResults, playerName, die) {
     //calculate average roll
     var average = result/dieAmount;
 
-    console.log(playerName + " rolled die " + dieAmount + " times.");
+    console.log(playerName + " rolled d" + die + " die " + dieAmount + " times.");
+    if (die == 20) {
+        console.log(results[19] + " were nat20");
+    }
     console.log(results[0] + " were nat1");
-    console.log(results[19] + " were nat20");
     console.log("Most rolled die was: " + maxDies + " and it was rolled " + max + " times");
     console.log("Least rolled die was: " + minDies + " and it was rolled " + min + " times");
-    console.log("On average player rolled: " + average + " on d" + die + " die");
+    console.log("On average " + playerName +" rolled: " + average + " on d" + die + " die");
     console.log(results);
 }
