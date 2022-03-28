@@ -1,20 +1,21 @@
 //create new array and object where to save rolls
 var rollResults = [];
 var results = {};
+var names = []; //to see who has rolled, since people switched nicks/names
 
 //what we want to save
 var by = ""; //who made the roll
 var tstamp = ""; //timestamp of the roll
 var die = ""; //which die was used
 var result =""; //roll result
-var elementExists = false;
+var elementExists = false; //init
 
 
 //get all the elements with roll results
 var rolls = document.getElementsByClassName("rollresult");
 
 //iterate through
-for (i = 0; i < rolls.length; i++){
+for (let i = 0; i < rolls.length; i++){
 
     //is there "by" element (sometimes roll20 doesn't add it), but there can only be one inside an element, so [0]
     elementExists = !!rolls[i].getElementsByClassName("by")[0];
@@ -25,6 +26,9 @@ for (i = 0; i < rolls.length; i++){
         tstamp = rolls[i].getElementsByClassName("tstamp")[0].textContent;
     }
 
+    //let's save a name if it doesn't already exist
+    if (names.indexOf(by) === -1) names.push(by);
+
     //rollresult class exists even if there wasn't a roll, check to see if there is actual rolling involved
     var rollExists = !!rolls[i].getElementsByClassName("didroll")[0];
 
@@ -34,7 +38,7 @@ for (i = 0; i < rolls.length; i++){
         var dieRolls = rolls[i].getElementsByClassName("didroll");
         
         //there can be multiple dicerolls
-        for (j = 0; j < dieRolls.length; j++) {
+        for (let j = 0; j < dieRolls.length; j++) {
             
             //what result was the roll 
             result = rolls[i].getElementsByClassName("didroll")[j].textContent;
@@ -64,7 +68,7 @@ for (i = 0; i < rolls.length; i++){
 //next let's check all the sheet rolls
 var sheetRolls = document.getElementsByClassName("inlinerollresult");
 //iterate through
-for (i = 0; i < sheetRolls.length; i++){
+for (let i = 0; i < sheetRolls.length; i++){
 
     //if sheetRolls has title
     if (!!sheetRolls[i].title) {
@@ -85,6 +89,9 @@ for (i = 0; i < sheetRolls.length; i++){
                 tstamp = parent.getElementsByClassName("tstamp")[0].textContent;
             } //if
 
+            //let's save a name if it doesn't already exist
+            if (names.indexOf(by) === -1) names.push(by);
+
             //what die was rolled (ex. Rolling 1d20...)
             var dieUsed = title.match(/(?<=Rolling )(.*?)(\+|c|k| )/)[1];
             var die = dieUsed.split("d")[1];
@@ -97,10 +104,10 @@ for (i = 0; i < sheetRolls.length; i++){
             }
 
             //we need to store all the rolls
-            for (j = 0; j < dieAmount; j++) {
+            for (let j = 0; j < dieAmount; j++) {
                 //the rollresults are between spans ex. <span class="basicdiceroll">11</span>
                 var resultRolls = title.match(/(?<=">)(.*?)(?=<\/span)/g);
-                for (k = 0; k < resultRolls.length; k++) {
+                for (let k = 0; k < resultRolls.length; k++) {
                     var resultRoll = resultRolls[k];
 
                     //save results
@@ -120,18 +127,22 @@ for (i = 0; i < sheetRolls.length; i++){
     }//if sheetrolls has a title   
 }//for
 
+//get all the rollers
+//console.log(names);
 
 //all results
-//getOverallResults(rollResults);
+getOverallResults(rollResults, 20);
 
 //by player
-//getPlayerResults(rollResults, "Gilbin");
-//getPlayerResults(rollResults, "Mirarin");
-//getPlayerResults(rollResults, "Pihlaja");
-//getPlayerResults(rollResults, "Vellamo");
-//getPlayerResults(rollResults, "Kiljurn");
-//getPlayerResults(rollResults, "Aranthir");
-//getPlayerResults(rollResults, "DM");
+getPlayerResults(rollResults, "Gilbin", 20);
+getPlayerResults(rollResults, "Mirarin", 20);
+getPlayerResults(rollResults, "Dhalki", 20);
+getPlayerResults(rollResults, "Pihlaja", 20);
+getPlayerResults(rollResults, "Kiljurn", 20);
+getPlayerResults(rollResults, "Aranthir", 20);
+getPlayerResults(rollResults, "DM", 20);
+getPlayerResults(rollResults, "Light", 20);
+
 
 //by damageDie
 //getDamageDieResults(rollResults, "d8", "Kiljurn");
