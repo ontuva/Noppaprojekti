@@ -2,6 +2,7 @@
 var rollResults = [];
 var results = {};
 var names = []; //to see who has rolled, since people switched nicks/names
+var allDies = []; //to see what dies have been rolled (2,4,6,8...)
 
 //what we want to save
 var by = ""; //who made the roll
@@ -43,10 +44,14 @@ for (let i = 0; i < rolls.length; i++){
             //what result was the roll 
             result = rolls[i].getElementsByClassName("didroll")[j].textContent;
             
-            //get what die was used, it's the classname after diceroll
+            //get what die was used, usually it's the classname after diceroll (ex. ['diceroll', 'd20'], ['diceroll', 'withouticons', 'd20'])
             var dieName = rolls[i].getElementsByClassName("diceroll")[j].className.split(" ");
-            //we don't want the d
-            die = dieName[1].split("d")[1];
+
+            //sometimes there is withouticons before diceroll, so we need to check for that and save accordingly, also, we don't need the d
+            (dieName[1].match(/withouticons/)) ? die = dieName[2].split("d")[1] : die = dieName[1].split("d")[1];
+
+            //let's save the rolled die if it doesn't already exist
+            if (allDies.indexOf(die) === -1) allDies.push(die);
 
             //make a nice fancy object
             results = {
@@ -75,7 +80,8 @@ for (let i = 0; i < sheetRolls.length; i++){
         var title = sheetRolls[i].title;
 
         //if the title incluses [SAVE], the message is a spell DC and not a roll, we don't need that
-        if (!title.includes("[SAVE]")) {
+        //also HIT DICE are ex. 3[CON]=3, we don't need that either, but we need the rolls that are +[CON]
+        if (!(title.includes("[SAVE]") || (!title.includes("+") && title.includes("[CON]")))) {
 
             //if there is a roll, we need to find who made it and when, find the parent message
             var parent = sheetRolls[i].closest(".message");
@@ -93,8 +99,11 @@ for (let i = 0; i < sheetRolls.length; i++){
             if (names.indexOf(by) === -1) names.push(by);
 
             //what die was rolled (ex. Rolling 1d20...)
-            var dieUsed = title.match(/(?<=Rolling )(.*?)(\+|c|k| )/)[1];
+            var dieUsed = title.match(/(?<=Rolling )(.*?)(\+|\-|c|k| )/)[1];
             var die = dieUsed.split("d")[1];
+
+            //let's save the rolled die if it doesn't already exist
+            if (allDies.indexOf(die) === -1) allDies.push(die);
 
             //also store how many times die was rolled, it can be an integer or ex. (1*5), stored before d, ex 2d20 or (1*2)d20
             var dieAmount = dieUsed.split("d")[0];
@@ -127,25 +136,20 @@ for (let i = 0; i < sheetRolls.length; i++){
     }//if sheetrolls has a title   
 }//for
 
-//get all the rollers
+//get all the rollers (use roller name as second parameter on getPlayerResults)
 //console.log(names);
+
+//get all the dies
+//console.log(allDies);
 
 //all results
 getOverallResults(rollResults, 20);
 
 //by player
-getPlayerResults(rollResults, "Gilbin", 20);
-getPlayerResults(rollResults, "Mirarin", 20);
-getPlayerResults(rollResults, "Dhalki", 20);
-getPlayerResults(rollResults, "Pihlaja", 20);
-getPlayerResults(rollResults, "Kiljurn", 20);
-getPlayerResults(rollResults, "Aranthir", 20);
 getPlayerResults(rollResults, "DM", 20);
-getPlayerResults(rollResults, "Light", 20);
-
-
-//by damageDie
-//getDamageDieResults(rollResults, "d8", "Kiljurn");
-
-//getMostUsedDamageDie(rollResults);
-
+getPlayerResults(rollResults, "DM", 4);
+getPlayerResults(rollResults, "DM", 6);
+getPlayerResults(rollResults, "DM", 8);
+getPlayerResults(rollResults, "DM", 10);
+getPlayerResults(rollResults, "DM", 12);
+getPlayerResults(rollResults, "DM", 100);
