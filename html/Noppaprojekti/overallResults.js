@@ -41,14 +41,13 @@ function getOverallResults(rollResults, die) {
 
     //calculating average roll
     var average = result / dieAmount;
+
+    console.log("Together d" + die + " was rolled " + dieAmount + " times.");
     console.log("AVERAGE:" + average + " on d" + die + " die");
-
-
     console.log("MOST: " + maxDies + " was rolled " + max + " times");
     console.log("LEAST: " + minDies + " was rolled " + min + " times");
-    console.log("d" + die + " was rolled " + dieAmount + " times.");
+    console.log("d" + die + " " + results[0] + " were nat1");
     if (die == 20) {
-        console.log(results[0] + " were nat1");
-        console.log(results[19] + " were nat20");
+        console.log("d" + die + " " + results[19] + " were nat20");
     }  
 }
