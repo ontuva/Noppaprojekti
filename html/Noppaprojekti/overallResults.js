@@ -1,69 +1,54 @@
-function getOverallResults(rollResults) {
+function getOverallResults(rollResults, die) {
 
-    var d20 = 0;
-    var result = 0;
-    //lets save the results in object
-    var results = {
-        "1":0, 
-        "2":0, 
-        "3":0, 
-        "4":0,
-        "5":0,
-        "6":0,
-        "7":0,
-        "8":0,
-        "9":0,
-        "10":0,
-        "11":0,
-        "12":0,
-        "13":0,
-        "14":0,
-        "15":0,
-        "16":0,
-        "17":0,
-        "18":0,
-        "19":0,
-        "20":0
-    };
+    var dieAmount = 0; //how many times die was rolled
+    var result = 0; //what the dieresult was
+
+    //lets save the results in an array, initial dieAmount count is 0, the array length is the same as die used
+    var results = new Array(die).fill(0);
 
     rollResults.forEach(function(item, index, array) {
 
-        if (item.die == "d20") {
-            d20++; //how many times was d20 rolled
+        if (item.die == die) {
+            dieAmount++; //how many times was the die rolled
             result = +result + +item.result; //for calculating average
-            results[item.result] += 1;
-        }
+            results[item.result-1] += 1; ////add one to the results, array index starts from 0, so -1
+        } //if item.die
+
     }) //foreach
 
     //find out which die was rolled most and least
-    var max = 0; //initialize
-    var min = 9999; //needs to be larger than overall rolls
-    var maxDie = 0; //initialize
-    var minDie = 0; //initialize
-    var keys = Object.keys(results); //get all the keys
+    var max = 0; //init max to 0
 
-    for (i = 0; i < keys.length; i++) {
-        if(results[keys[i]] > max) {
-            max = results[keys[i]]; // how many times was rolled
-            maxDie = keys[i]; // what die it was
-        }     
-        if(results[keys[i]] < min) {
-            min = results[keys[i]]; // how many times was rolled
-            minDie = keys[i]; // what die it was
-        }     
+    //loop through the rolls
+    for (let i = 0; i < results.length; i++) {
+        if (max < results[i] ) max = results[i]; //if current max is smaller than the next one, save new one
     }
 
-    //TODO: was some other dice rolled as many times?
+    var min = max; //init minimum to current max
+    //loop through the rolls to find minimum roll
+    for (let j = 0; j < results.length; j++) {
+        if (min > results[j] ) min = results[j]; //if current min is larger than the next one, save new one
+    }
 
-    //calculating average d20 roll
-    var average = result / d20;
-    console.log("AVERAGE d20:" + average);
+    maxDies = ""; //what dies were rolled max times
+    minDies = ""; //what dies were rolled min times
+
+    //we need all the dies that we're rolled max or min times
+    for (let k = 0; k < results.length; k++) {
+        if (results[k] == max) maxDies += k+1 + " ";
+        if (results[k] == min) minDies += k+1 + " ";
+    }
+
+    //calculating average roll
+    var average = result / dieAmount;
+    console.log("AVERAGE:" + average + " on d" + die + " die");
 
 
-    console.log("MOST: " + maxDie + " was rolled " + max + " times");
-    console.log("LEAST: " + minDie + " was rolled " + min + " times");
-    console.log("d20 was rolled " + d20 + " times.");
-    console.log(results[1] + " were nat1");
-    console.log(results[20] + " were nat20");
-    console.log(results); //for debugging
+    console.log("MOST: " + maxDies + " was rolled " + max + " times");
+    console.log("LEAST: " + minDies + " was rolled " + min + " times");
+    console.log("d" + die + " was rolled " + dieAmount + " times.");
+    if (die == 20) {
+        console.log(results[0] + " were nat1");
+        console.log(results[19] + " were nat20");
+    }  
 }
