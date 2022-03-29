@@ -17,7 +17,6 @@ var rolls = document.getElementsByClassName("rollresult");
 
 //iterate through
 for (let i = 0; i < rolls.length; i++){
-
     //is there "by" element (sometimes roll20 doesn't add it), but there can only be one inside an element, so [0]
     elementExists = !!rolls[i].getElementsByClassName("by")[0];
 
@@ -40,9 +39,11 @@ for (let i = 0; i < rolls.length; i++){
         
         //there can be multiple dicerolls
         for (let j = 0; j < dieRolls.length; j++) {
-            
-            //what result was the roll 
+            //what result was the roll
             result = rolls[i].getElementsByClassName("didroll")[j].textContent;
+
+            //is it a number (sometimes it can be + and - too, we don't want those)
+            if (isNaN(result)) continue;
             
             //get what die was used, usually it's the classname after diceroll (ex. ['diceroll', 'd20'], ['diceroll', 'withouticons', 'd20'])
             var dieName = rolls[i].getElementsByClassName("diceroll")[j].className.split(" ");
@@ -61,9 +62,8 @@ for (let i = 0; i < rolls.length; i++){
                 "result":result
             };
 
-        //push in array
-        rollResults.push(results);
-
+            //push in array
+            rollResults.push(results);
         }
 
     }//if
@@ -72,6 +72,7 @@ for (let i = 0; i < rolls.length; i++){
 
 //next let's check all the sheet rolls
 var sheetRolls = document.getElementsByClassName("inlinerollresult");
+
 //iterate through
 for (let i = 0; i < sheetRolls.length; i++){
 
@@ -115,7 +116,7 @@ for (let i = 0; i < sheetRolls.length; i++){
             //we need to store all the rolls
             for (let j = 0; j < dieAmount; j++) {
                 //the rollresults are between spans ex. <span class="basicdiceroll">11</span>
-                var resultRolls = title.match(/(?<=">)(.*?)(?=<\/span)/g);
+                var resultRolls = title.match(/(?<=">)(.*?[0-9])(?=<\/span)/g);
                 for (let k = 0; k < resultRolls.length; k++) {
                     var resultRoll = resultRolls[k];
 
@@ -137,19 +138,19 @@ for (let i = 0; i < sheetRolls.length; i++){
 }//for
 
 //get all the rollers (use roller name as second parameter on getPlayerResults)
-//console.log(names);
+console.log(names);
 
 //get all the dies
-//console.log(allDies);
+console.log(allDies);
 
 //all results
 getOverallResults(rollResults, 20);
 
 //by player
 getPlayerResults(rollResults, "DM", 20);
-getPlayerResults(rollResults, "DM", 4);
-getPlayerResults(rollResults, "DM", 6);
-getPlayerResults(rollResults, "DM", 8);
-getPlayerResults(rollResults, "DM", 10);
 getPlayerResults(rollResults, "DM", 12);
+getPlayerResults(rollResults, "DM", 10);
+getPlayerResults(rollResults, "DM", 8);
+getPlayerResults(rollResults, "DM", 6);
+getPlayerResults(rollResults, "DM", 4);
 getPlayerResults(rollResults, "DM", 100);
